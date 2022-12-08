@@ -108,7 +108,7 @@ while (tries < 6):
         print(hangmanVariants[tries])
         print(f'You lost... The word was: {word}.')
         exit()
-
+    # winning message when guessing all the letters!
     if (wordArray.__contains__('_') == False):
         cmd('cls')
         print(hangmanVariants[tries])
