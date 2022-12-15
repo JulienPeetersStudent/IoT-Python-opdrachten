@@ -7,7 +7,7 @@ with open('./words.txt') as wordread:
 word = random.choice(words)
 word = word.strip()
 print(word)
-print('_' * len(word))
+print('_ ' * len(word))
 attempts = 0
 letters = []
 wrongLetters = []
