@@ -1,6 +1,5 @@
 import turtle as t
-import urllib.request as url
-import json
+import http.client as web
 
 cities = {
    'Antwerp': [51.22, 4.40],
@@ -15,9 +14,15 @@ city = input('Choose a city: ')
 cityUrl = ''
 if city in cities:
    coords = cities[city]
-   cityUrl = f'https://api.open-meteo.com/v1/forecast?latitude={coords[0]}&longitude={coords[1]}&hourly=temperature_2m'
+   cityUrl = f'/v1/forecast?latitude={coords[0]}&longitude={coords[1]}&hourly=temperature_2m'
    print(cities[city])
    print(cityUrl)
 
-data = url.urlopen(cityUrl)
-print(data)
+
+conn = web.HTTPSConnection("api.open-meteo.com")
+payload = ''
+headers = {}
+conn.request("GET", cityUrl, payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
