@@ -29,5 +29,10 @@ res = conn.getresponse()
 # data = res.read()
 apiJson = json.loads(res.read())
 print(apiJson['hourly']['temperature_2m'])
-for index, y in apiJson['hourly']['temperature_2m']:
-   t.goto(index, y)
+X = 0
+XScale = 2
+YScale = 5
+for Y in apiJson['hourly']['temperature_2m']:
+   t.goto(X * XScale, Y * YScale)
+   X += 1
+t.done()
