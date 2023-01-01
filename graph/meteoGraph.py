@@ -1,5 +1,6 @@
 import turtle as t
 import http.client as web
+import json
 
 cities = {
    'Antwerp': [51.22, 4.40],
@@ -20,11 +21,13 @@ if city in cities:
    print(cities[city])
    print(cityUrl)
 
-
 conn = web.HTTPSConnection("api.open-meteo.com")
 payload = ''
 headers = {}
 conn.request("GET", cityUrl, payload, headers)
 res = conn.getresponse()
-data = res.read()
-print(data)
+# data = res.read()
+apiJson = json.loads(res.read())
+print(apiJson['hourly']['temperature_2m'])
+for index, y in apiJson['hourly']['temperature_2m']:
+   t.goto(index, y)
