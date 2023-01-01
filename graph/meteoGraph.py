@@ -23,8 +23,8 @@ cityUrl = ''
 if city in cities:
    coords = cities[city]
    cityUrl = f'/v1/forecast?latitude={coords[0]}&longitude={coords[1]}&hourly=temperature_2m'
-   print(cities[city])
-   print(cityUrl)
+   # print(cities[city])
+   # print(cityUrl)
 
 # get raw JSON from API
 conn = web.HTTPSConnection("api.open-meteo.com")
