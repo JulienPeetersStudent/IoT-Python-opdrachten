@@ -36,12 +36,29 @@ res = conn.getresponse()
 # turn raw JSON into usable JSON
 apiJson = json.loads(res.read())
 # print(apiJson['hourly']['temperature_2m'])
+
 # setup for graph
 X = 0
 XScale = 2
-YScale = 5
+YScale = 10
+t.color('#ffffff', '#1c1c1c')
+t.bgcolor('#0a0a0a')
+t.begin_fill()
+t.speed('fastest')
+
 # drawing the graph by iteration
 for Y in apiJson['hourly']['temperature_2m']:
    t.goto(X * XScale, Y * YScale)
    X += 1
+# filling in the graph
+t.sety(0)
+t.setx(0)
+t.end_fill()
+
+# draw grid
+Xmax = len(apiJson['hourly']['temperature_2m']) * XScale
+Ymin = min(apiJson['hourly']['temperature_2m'])
+Ymax = max(apiJson['hourly']['temperature_2m'])
+print(Xmax, Ymin, Ymax)
+
 t.done()
