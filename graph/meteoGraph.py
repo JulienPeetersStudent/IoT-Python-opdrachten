@@ -43,8 +43,8 @@ Ymin = min(data['hourly']['temperature_2m'])
 Ymax = max(data['hourly']['temperature_2m'])
 print(Xmax, Ymin, Ymax)
 X = 0
-XScale = 4
-YScale = 25
+XScale = 6
+YScale = 40
 graphExt = 25
 graphPadding = 75
 t.tracer(0, 0)
@@ -54,9 +54,16 @@ t.Screen().setup(width=(Xmax * XScale) + graphPadding,
                  height=(Ymax * YScale) + graphExt + graphPadding)
 t.setworldcoordinates(
     -graphPadding / 2,
-    -graphPadding / 4 + (-graphPadding / 8),
-    (Xmax * XScale) + (graphPadding / 4),
-    (Ymax * YScale) + (graphPadding / 2) + (-graphPadding / 8) + (graphExt * 2)
+    -graphPadding / 2,
+    (Xmax * XScale) + (graphPadding / 2),
+    (Ymax * YScale) + (graphPadding / 2) + graphExt
+)
+print(t.screensize())
+print(
+    -graphPadding / 2,
+    -graphPadding / 2,
+    (Xmax * XScale) + (graphPadding / 2),
+    (Ymax * YScale) + (graphPadding / 2) + graphExt
 )
 
 # draw background grid
@@ -86,7 +93,6 @@ t.goto(0, Ymax * YScale + graphExt)
 t.write(city, align='left', font=('Arial', 16, 'bold'))
 
 # drawing the graph by iteration
-t.color('#ffffff', '#1c1c1c')
 for Y in data['hourly']['temperature_2m']:
     t.goto(X * XScale, Y * YScale)
     t.down()
