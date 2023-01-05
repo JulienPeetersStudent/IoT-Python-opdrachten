@@ -39,6 +39,7 @@ apiJson = json.loads(res.read())
 
 # setup for graph
 t.screensize(canvwidth=800, canvheight=400, bg='#0a0a0a')
+t.window_height()
 X = 0
 XScale = 2
 YScale = 25
@@ -68,10 +69,11 @@ while YStripeCount < ((Ymax * YScale + graphExt) / (YStripeSpacing) - 1):
     YStripeCount += 1
     t.goto(-10, YStripeCount * YStripeSpacing)
     t.down()
+    t.write(str(YStripeCount) + '°C', align='right')
     t.goto(Xmax * XScale + graphExt, YStripeCount * YStripeSpacing)
     t.up()
     print(YStripeCount)
-    print((Ymax + graphExt) / YStripeSpacing)
+    print((Ymax * YScale + graphExt) / YStripeSpacing)
 
 # drawing the graph by iteration
 t.color('#ffffff', '#1c1c1c')
@@ -80,4 +82,6 @@ for Y in apiJson['hourly']['temperature_2m']:
     t.down()
     X += 1
 
+t.up()
+t.home()
 t.done()
