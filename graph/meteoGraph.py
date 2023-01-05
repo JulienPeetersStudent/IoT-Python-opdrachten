@@ -86,7 +86,7 @@ YStripeSpacing = 1 * YScale
 # write initial 0 <type>
 t.pencolor('#ffffff')
 t.goto(-10, YStripeCount * YStripeSpacing)
-t.write('0' + graphs[graphType][1], align='right')
+t.write(str(YStripeCount + (Ymin//1)) + graphs[graphType][1], align='right')
 
 while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) - 1):
     YStripeCount += 1
