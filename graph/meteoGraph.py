@@ -43,7 +43,7 @@ res = conn.getresponse()
 
 # turn raw JSON into usable JSON
 data = json.loads(res.read())
-# print(data)
+print(data)
 # setup and scaling/centering for graph
 Xmax = len(data['hourly'][graphs[graphSelect][0]])
 Ymin = min(data['hourly'][graphs[graphSelect][0]])
@@ -100,8 +100,8 @@ XStripeCount = 0
 XStripeSpacing = 1 * XScale
 t.pencolor('#333333')
 
-while XStripeCount < ((Xmax * XScale) / XStripeSpacing - 10):
-    XStripeCount += 10
+while XStripeCount < ((Xmax * XScale) / XStripeSpacing - 8):
+    XStripeCount += 8
     # go to top of graph at right width
     t.goto(XStripeCount * XStripeSpacing, (Ymax - Ymin//1) * YScale + graphExt)
     t.down()
@@ -115,7 +115,12 @@ while XStripeCount < ((Xmax * XScale) / XStripeSpacing - 10):
     t.down()
     # write the time
     t.pencolor('#ffffff')
-    t.write(time[-5:], align='center')
+    if time[-5:] == '00:00':
+        t.write(f'{time[8:10]}-{time[5:7]}',
+                align='center', font=('Arial', 8, 'bold'))
+    else:
+        t.write(time[-5:], align='center', font=('Arial', 8, 'normal'))
+
     t.pencolor('#333333')
     t.up()
 
