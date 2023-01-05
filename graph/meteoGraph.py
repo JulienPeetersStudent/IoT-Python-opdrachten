@@ -11,6 +11,13 @@ cities = {
     'Moscow': [55.75, 37.62]
 }
 
+# list of graph types
+graphs = {
+    'Temperature': ['temperature_2m', '°C'],
+    'Rain': ['rain', 'mm'],
+    'Snowfall': ['snowfall', 'cm']
+}
+
 # print cities for user
 for index, x in enumerate(cities):
     print(x)
@@ -18,11 +25,21 @@ for index, x in enumerate(cities):
 # ask for city choice
 city = input('Choose a city: ')
 
+# ask for graph type
+print('Temperature', 'Rain', 'Snowfall', sep='\n')
+graphSelect = input('Which data would you like to graph? ')
+graphType = ''
+if graphSelect == 'Temperature':
+    graphType = 'Temperature'
+elif graphSelect == 'Rain':
+    graphType = 'Rain'
+elif graphSelect == 'Snowfall':
+    graphType = 'Snowfall'
+
 # edit URL for HTTP GET
 cityUrl = ''
 if city in cities:
-    coords = cities[city]
-    cityUrl = f'/v1/forecast?latitude={coords[0]}&longitude={coords[1]}&hourly=temperature_2m'
+    cityUrl = f'/v1/forecast?latitude={cities[city][0]}&longitude={cities[city][1]}&hourly=temperature_2m,rain,snowfall'
 
 # get raw JSON from API
 conn = web.HTTPSConnection("api.open-meteo.com")
@@ -33,11 +50,11 @@ res = conn.getresponse()
 
 # turn raw JSON into usable JSON
 data = json.loads(res.read())
-
+# print(data)
 # setup and scaling/centering for graph
-Xmax = len(data['hourly']['temperature_2m'])
-Ymin = min(data['hourly']['temperature_2m'])
-Ymax = max(data['hourly']['temperature_2m'])
+Xmax = len(data['hourly'][graphs[graphType][0]])
+Ymin = min(data['hourly'][graphs[graphType][0]])
+Ymax = max(data['hourly'][graphs[graphType][0]])
 print(Xmax, Ymin, Ymax)
 XScale = 6
 YScale = 40
@@ -63,11 +80,13 @@ t.goto(Xmax * XScale, 0)
 t.goto(0, 0)
 t.goto(0, (Ymax - Ymin//1) * YScale + graphExt)
 t.up()
-
 # draw Y axis legend and stripes
 YStripeCount = 0
 YStripeSpacing = 1 * YScale
-t.pencolor('#444444')
+# write initial 0 <type>
+t.pencolor('#ffffff')
+t.goto(-10, YStripeCount * YStripeSpacing)
+t.write('0' + graphs[graphType][1], align='right')
 
 while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) - 1):
     YStripeCount += 1
@@ -76,7 +95,8 @@ while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) 
     t.down()
     # write temperature towards the left
     t.pencolor('#ffffff')
-    t.write(str(YStripeCount + (Ymin//1)) + '°C', align='right')
+    t.write(str(YStripeCount + (Ymin//1)) +
+            graphs[graphType][1], align='right')
     # draw line towards right end of graph
     t.pencolor('#444444')
     t.goto(Xmax * XScale, YStripeCount * YStripeSpacing)
@@ -114,11 +134,11 @@ t.write(city, align='left', font=('Arial', 16, 'bold'))
 
 # drawing the graph by iteration
 Xpos = 0
-for Y in data['hourly']['temperature_2m']:
+for Y in data['hourly'][graphs[graphType][0]]:
     t.goto(Xpos * XScale, (Y * YScale) - (Ymin//1 * YScale))
     t.down()
     Xpos += 1
 
 t.up()
 t.home()
-t.done()
+t.exitonclick()
