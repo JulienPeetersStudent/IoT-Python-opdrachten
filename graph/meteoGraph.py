@@ -51,9 +51,9 @@ t.bgcolor('#0a0a0a')
 t.Screen().setup(width=(Xmax * XScale) + graphPadding,
                  height=((Ymax - Ymin//1) * YScale) + graphExt + graphPadding)
 t.setworldcoordinates(
+    -graphPadding / 2 - (graphPadding / 5),
     -graphPadding / 2,
-    -graphPadding / 2,
-    (Xmax * XScale) + (graphPadding / 2),
+    (Xmax * XScale) + (graphPadding / 2) - (graphPadding / 5),
     ((Ymax - Ymin//1) * YScale) + (graphPadding / 2) + graphExt
 )
 
@@ -71,13 +71,13 @@ t.pencolor('#444444')
 
 while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) - 1):
     YStripeCount += 1
-	 # go to most left point at right height
+    # go to most left point at right height
     t.goto(-10, YStripeCount * YStripeSpacing)
     t.down()
-	 # write temperature towards the left
+    # write temperature towards the left
     t.pencolor('#ffffff')
     t.write(str(YStripeCount + (Ymin//1)) + '°C', align='right')
-	 # draw line towards right end of graph
+    # draw line towards right end of graph
     t.pencolor('#444444')
     t.goto(Xmax * XScale, YStripeCount * YStripeSpacing)
     t.up()
@@ -89,18 +89,18 @@ t.pencolor('#333333')
 
 while XStripeCount < ((Xmax * XScale) / XStripeSpacing - 10):
     XStripeCount += 10
-	 # go to top of graph at right width
+    # go to top of graph at right width
     t.goto(XStripeCount * XStripeSpacing, (Ymax - Ymin//1) * YScale + graphExt)
     t.down()
-	 # draw line down
+    # draw line down
     t.goto(XStripeCount * XStripeSpacing, -10)
     t.up()
-	 # move extra 15 pixels down for text spacing
+    # move extra 15 pixels down for text spacing
     t.goto(XStripeCount * XStripeSpacing, -25)
-	 # get right data value from JSON
+    # get right data value from JSON
     time = data['hourly']['time'][XStripeCount]
     t.down()
-	 # write the time
+    # write the time
     t.pencolor('#ffffff')
     t.write(time[-5:], align='center')
     t.pencolor('#333333')
