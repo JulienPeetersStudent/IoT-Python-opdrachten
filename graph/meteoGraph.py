@@ -28,13 +28,6 @@ city = input('Choose a city: ')
 # ask for graph type
 print('Temperature', 'Rain', 'Snowfall', sep='\n')
 graphSelect = input('Which data would you like to graph? ')
-graphType = ''
-if graphSelect == 'Temperature':
-    graphType = 'Temperature'
-elif graphSelect == 'Rain':
-    graphType = 'Rain'
-elif graphSelect == 'Snowfall':
-    graphType = 'Snowfall'
 
 # edit URL for HTTP GET
 cityUrl = ''
@@ -52,9 +45,9 @@ res = conn.getresponse()
 data = json.loads(res.read())
 # print(data)
 # setup and scaling/centering for graph
-Xmax = len(data['hourly'][graphs[graphType][0]])
-Ymin = min(data['hourly'][graphs[graphType][0]])
-Ymax = max(data['hourly'][graphs[graphType][0]])
+Xmax = len(data['hourly'][graphs[graphSelect][0]])
+Ymin = min(data['hourly'][graphs[graphSelect][0]])
+Ymax = max(data['hourly'][graphs[graphSelect][0]])
 print(Xmax, Ymin, Ymax)
 XScale = 6
 YScale = 40
@@ -86,7 +79,7 @@ YStripeSpacing = 1 * YScale
 # write initial 0 <type>
 t.pencolor('#ffffff')
 t.goto(-10, YStripeCount * YStripeSpacing)
-t.write(str(YStripeCount + (Ymin//1)) + graphs[graphType][1], align='right')
+t.write(str(YStripeCount + (Ymin//1)) + graphs[graphSelect][1], align='right')
 
 while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) - 1):
     YStripeCount += 1
@@ -96,7 +89,7 @@ while YStripeCount < (((Ymax - Ymin//1) * YScale + graphExt) / (YStripeSpacing) 
     # write temperature towards the left
     t.pencolor('#ffffff')
     t.write(str(YStripeCount + (Ymin//1)) +
-            graphs[graphType][1], align='right')
+            graphs[graphSelect][1], align='right')
     # draw line towards right end of graph
     t.pencolor('#444444')
     t.goto(Xmax * XScale, YStripeCount * YStripeSpacing)
@@ -134,7 +127,7 @@ t.write(city, align='left', font=('Arial', 16, 'bold'))
 
 # drawing the graph by iteration
 Xpos = 0
-for Y in data['hourly'][graphs[graphType][0]]:
+for Y in data['hourly'][graphs[graphSelect][0]]:
     t.goto(Xpos * XScale, (Y * YScale) - (Ymin//1 * YScale))
     t.down()
     Xpos += 1
