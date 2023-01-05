@@ -123,7 +123,8 @@ while XStripeCount < ((Xmax * XScale) / XStripeSpacing - 10):
 # add city title
 t.pencolor('#ffffff')
 t.goto(0, (Ymax - Ymin//1) * YScale + graphExt)
-t.write(city, align='left', font=('Arial', 16, 'bold'))
+t.write(city + ' - ' + graphs[graphSelect][0],
+        align='left', font=('Arial', 16, 'bold'))
 
 # drawing the graph by iteration
 Xpos = 0
