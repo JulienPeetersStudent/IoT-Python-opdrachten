@@ -19,7 +19,7 @@ graphs = {
 }
 
 # print cities for user
-for index, x in enumerate(cities):
+for x in cities:
     print(x)
 
 # ask for city choice
